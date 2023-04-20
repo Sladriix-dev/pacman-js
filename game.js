@@ -129,3 +129,23 @@ let createNewPacman = () => {
 
 createNewPacman();
 gameLoop();
+
+window.addEventListener("keydown", (event) => {
+  let k = event.key;
+
+  setTimeout(() => {
+    if (k == 'ArrowLeft' || k == 'q') {
+      // left
+      pacman.nextDirection = DIRECTION_LEFT;
+    } else if (k == 'ArrowUp' || k == 'z') {
+      // up
+      pacman.nextDirection = DIRECTION_UP;
+    } else if (k == 'ArrowRight' || k == 'd') {
+      // right
+      pacman.nextDirection = DIRECTION_RIGHT;
+    } else if (k == 'ArrowDown' || k == 's') {
+      // bottom
+      pacman.nextDirection = DIRECTION_BOTTOM;
+    }
+  }, 1);
+});

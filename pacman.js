@@ -5,7 +5,8 @@ class Pacman {
     this.width = width;
     this.height = height;
     this.speed = speed;
-    this.direction = DIRECTION_RIGHT;
+    this.direction = 4;
+    this.nextDirection = this.direction;
     this.currentFrame = 1;
     this.frameCount = 7;
 
@@ -19,6 +20,7 @@ class Pacman {
     this.moveForwards();
     if (this.checkCollision()) {
       this.moveBackwards();
+      return;
     }
   }
 
@@ -26,37 +28,37 @@ class Pacman {
 
   moveBackwards() {
     switch (this.direction) {
-      case DIRECTION_RIGHT:
+      case DIRECTION_RIGHT: // Right
         this.x -= this.speed;
         break;
-      case DIRECTION_UP:
-        this.y -= this.speed;
-        break;
-      case DIRECTION_LEFT:
+      case DIRECTION_UP: // Up
         this.y += this.speed;
         break;
-      case DIRECTION_BOTTOM:
+      case DIRECTION_LEFT: // Left
         this.x += this.speed;
+        break;
+      case DIRECTION_BOTTOM: // Bottom
+        this.y -= this.speed;
         break;
     }
   }
 
   moveForwards() {
     switch (this.direction) {
-      case DIRECTION_RIGHT:
+      case DIRECTION_RIGHT: // Right
         this.x += this.speed;
         break;
-      case DIRECTION_UP:
-        this.y += this.speed;
-        break;
-      case DIRECTION_LEFT:
+      case DIRECTION_UP: // Up
         this.y -= this.speed;
         break;
-      case DIRECTION_BOTTOM:
+      case DIRECTION_LEFT: // Left
         this.x -= this.speed;
         break;
+      case DIRECTION_BOTTOM: // Bottom
+        this.y += this.speed;
+        break;
     }
-  }
+  };
 
   checkCollision() {
     let isCollised = false;
@@ -73,7 +75,18 @@ class Pacman {
 
   checkGhostCollision() {}
 
-  changeDirectionIfPossible() {}
+  changeDirectionIfPossible() {
+    if (this.direction == this.nextDirection) return;
+    let tempDirection = this.direction;
+    this.direction = this.nextDirection;
+    this.moveForwards();
+    if (this.checkCollision()) {
+      this.moveBackwards();
+      this.direction = tempDirection;
+    } else {
+      this.moveBackwards();
+    }
+  }
 
   changeAnimation() {
     this.currentFrame =
